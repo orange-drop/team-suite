@@ -39,6 +39,9 @@ func _import_repo():
 	os_execute("git fetch origin")
 	os_execute("git reset --hard origin/main")
 	os_execute("git clean -fd")
+	
+#	restart the editor
+	EditorInterface.get_script_editor().reload_scripts()
 
 	refresh_plugin()
 

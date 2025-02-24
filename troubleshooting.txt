@@ -1,2 +1,0 @@
-create git token access through github:
-https://gist.github.com/jonjack/bf295d4170edeb00e96fb158f9b1ba3c

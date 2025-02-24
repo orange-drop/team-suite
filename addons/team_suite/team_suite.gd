@@ -28,7 +28,7 @@ func _create_new_repo():
 	os_execute("git remote add origin " + git_url)
 	os_execute("git push -u origin main")
 
-	refresh_plugin()
+	refresh_plugin_state()
 
 # Handle the clone button press
 func _import_repo():
@@ -40,10 +40,7 @@ func _import_repo():
 	os_execute("git reset --hard origin/main")
 	os_execute("git clean -fd")
 	
-#	restart the editor
-	EditorInterface.get_script_editor().reload_scripts()
-
-	refresh_plugin()
+	reload_project_ui()
 
 func show_connected_project_toolbar(team_suite_toolbar : VBoxContainer):
 	var output = os_execute_stdout("git init")
@@ -72,7 +69,7 @@ func show_connected_project_toolbar(team_suite_toolbar : VBoxContainer):
 		os_execute("git push origin main")
 	)
 	hbox.add_child(push_button)
-	
+
 	var pull_button = Button.new()
 	pull_button.text = "Pull"
 	pull_button.connect("pressed", func():
@@ -81,6 +78,12 @@ func show_connected_project_toolbar(team_suite_toolbar : VBoxContainer):
 	hbox.add_child(pull_button)
 	
 	team_suite_toolbar.add_child(hbox)
+
+	
+func reload_project_ui():
+	#EditorInterface.get_script_editor().reload_scripts()
+	print("you need to reload the current project from Project -> Reload Current Project")
+	get_editor_interface().restart_editor()
 
 
 func show_import_project_toolbar(team_suite_toolbar : VBoxContainer):
@@ -106,7 +109,7 @@ func show_import_project_toolbar(team_suite_toolbar : VBoxContainer):
 	
 	team_suite_toolbar.add_child(hbox)
 
-func refresh_plugin():
+func refresh_plugin_state():
 	_exit_tree()
 	_enter_tree()
 

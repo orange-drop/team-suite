@@ -57,7 +57,7 @@ func show_connected_project_toolbar(team_suite_toolbar : VBoxContainer):
 	# Create a Label to display output messages
 	var output_label = Label.new()
 	output_label.text = "branch: " + branch_name
-	team_suite_toolbar.add_child(output_label)
+	hbox.add_child(output_label)
 	
 	## Create a Button to trigger the clone operation
 	var push_button = Button.new()

@@ -7,9 +7,16 @@ var team_suite_toolbar : Control
 
 var git_url_input : LineEdit
 
+
+var external_plugins = [
+	"https://github.com/4d49/godot-console"
+]
+
 # Called when the plugin is enabled
 func _enter_tree():
 	team_suite_toolbar = VBoxContainer.new()
+	
+	download_plugins()
 
 	if check_if_git_project():
 		show_connected_project_toolbar(team_suite_toolbar)
@@ -17,6 +24,10 @@ func _enter_tree():
 		show_import_project_toolbar(team_suite_toolbar)
 
 	add_control_to_container(CONTAINER_TOOLBAR, team_suite_toolbar)
+
+func download_plugins():
+	for p in external_plugins:
+		os_execute("cd addons && git clone " + p, true)
 
 func _create_new_repo():
 	var git_url = git_url_input.text.strip_edges()

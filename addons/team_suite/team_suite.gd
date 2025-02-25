@@ -5,8 +5,6 @@ var is_project_initialized : bool = false
 
 var team_suite_toolbar : Control
 
-# new thing to push
-
 var git_url_input : LineEdit
 
 # Called when the plugin is enabled

@@ -5,6 +5,8 @@ var is_project_initialized : bool = false
 
 var team_suite_toolbar : Control
 
+# new thing to push
+
 var git_url_input : LineEdit
 
 # Called when the plugin is enabled
@@ -23,10 +25,10 @@ func _create_new_repo():
 
 	os_execute("git init")
 	os_execute("git add -A")
-	os_execute("git commit -am \"init commit\" ")
-	os_execute("git branch -M main")
-	os_execute("git remote add origin " + git_url)
-	os_execute("git push -u origin main")
+	os_execute("git commit -am \"init commit\" ", true)
+	os_execute("git branch -M main", true)
+	os_execute("git remote add origin " + git_url, true)
+	os_execute("git push -u origin main", true)
 
 	refresh_plugin_state()
 
@@ -36,9 +38,9 @@ func _import_repo():
 
 	os_execute("git init")
 	os_execute("git remote add origin " + git_url)
-	os_execute("git fetch origin")
-	os_execute("git reset --hard origin/main")
-	os_execute("git clean -fd")
+	os_execute("git fetch origin", true)
+	os_execute("git reset --hard origin/main", true)
+	os_execute("git clean -fd", true)
 	
 	reload_project_ui()
 
@@ -63,10 +65,10 @@ func show_connected_project_toolbar(team_suite_toolbar : VBoxContainer):
 	var push_button = Button.new()
 	push_button.text = "Push"
 	push_button.connect("pressed", func():
-		os_execute("git pull origin main")
+		os_execute("git pull origin main", true)
 		os_execute("git add -A")
 		os_execute("git commit -am 'na'")
-		os_execute("git push origin main")
+		os_execute("git push origin main", true)
 	)
 	hbox.add_child(push_button)
 
@@ -116,12 +118,20 @@ func refresh_plugin_state():
 func check_if_git_project():
 	return os_execute("ls .git") == 0
 
-func os_execute(cmd):
-	return OS.execute("bash", ["-c", cmd])
-
-func os_execute_stdout(cmd):
+func os_execute(cmd, print_output = false):
 	var output = []
-	var exit_code = OS.execute("bash", ["-c", cmd], output)
+	var exit_code = OS.execute("bash", ["-c", cmd], output, true)
+	if print_output:
+		for i in output:
+			print(i)
+	return exit_code
+
+func os_execute_stdout(cmd, print_output = false):
+	var output = []
+	var exit_code = OS.execute("bash", ["-c", cmd], output, true)
+	if print_output:
+		for i in output:
+			print(i)
 	return output
 
 # Called when the plugin is disabled

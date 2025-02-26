@@ -26,6 +26,7 @@ func _enter_tree():
 	add_control_to_container(CONTAINER_TOOLBAR, team_suite_toolbar)
 
 func download_plugins():
+	var did_download_plugin
 	for p in external_plugins:
 		var plugin_name = get_submost_folder(p)
 		var output = os_execute_stdout("ls addons")
@@ -35,9 +36,13 @@ func download_plugins():
 				is_installed = true
 
 		if !is_installed:
+			did_download_plugin = true
 			os_execute("cd addons && git clone " + p, true)
 			os_execute("rm -rf .git")
 
+	if did_download_plugin:
+		reload_project_ui()
+		
 func _create_new_repo():
 	var git_url = git_url_input.text.strip_edges()
 

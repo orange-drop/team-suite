@@ -39,8 +39,8 @@ func download_plugins():
 			os_execute("cd addons && git clone " + p, true)
 			os_execute("rm -rf .git")
 
-	if did_download_plugin:
-		reload_project_ui()
+	# if did_download_plugin:
+	# 	reload_project_ui()
 		
 func _create_new_repo():
 	var git_url = git_url_input.text.strip_edges()

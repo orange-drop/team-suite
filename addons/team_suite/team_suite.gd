@@ -27,7 +27,16 @@ func _enter_tree():
 
 func download_plugins():
 	for p in external_plugins:
-		os_execute("cd addons && git clone " + p, true)
+		var plugin_name = get_submost_folder(p)
+		var output = os_execute_stdout("ls addons")
+		var is_installed = false
+		for line : String in output:
+			if line.contains(plugin_name):
+				is_installed = true
+
+		if !is_installed:
+			os_execute("cd addons && git clone " + p, true)
+			os_execute("rm -rf .git")
 
 func _create_new_repo():
 	var git_url = git_url_input.text.strip_edges()
@@ -164,3 +173,14 @@ func get_current_branch_name():
 	else:
 		printerr("No branch name found.")
 		return ""
+		
+func get_submost_folder(path: String) -> String:
+	# Create a regular expression to match the submost folder
+	var regex = RegEx.new()
+	regex.compile("([^/]+)/?$")  # Match the last segment of the path
+
+	# Search for the match
+	var result = regex.search(path)
+	if result:
+		return result.get_string()  # Return the matched submost folder
+	return ""  # Return an empty string if no match is found

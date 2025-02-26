@@ -7,7 +7,6 @@ var team_suite_toolbar : Control
 
 var git_url_input : LineEdit
 
-
 var external_plugins = [
 	"https://github.com/4d49/godot-console"
 ]
